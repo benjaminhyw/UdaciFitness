@@ -113,13 +113,13 @@ export function getMetricMetaInfo(metric) {
     eat: {
       displayName: "Eat",
       max: 10,
-      unit: "mratingiles",
+      unit: "rating",
       step: 1,
       type: "slider",
       getIcon() {
         return (
           <View>
-            <MaterialIcons name="food" color={"black"} size={35} />
+            <MaterialCommunityIcons name="food" color={"black"} size={35} />
           </View>
         );
       }
