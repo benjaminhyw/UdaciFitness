@@ -80,7 +80,6 @@ export default class AddEntry extends Component {
 
     // Update Redux
     // Route to home
-
     removeEntry(key);
 
     // Update DB
