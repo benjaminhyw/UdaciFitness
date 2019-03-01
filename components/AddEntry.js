@@ -6,6 +6,7 @@ import UdaciSteppers from "./UdaciSteppers";
 import DateHeader from "./DateHeader";
 import { Ionicons } from "@expo/vector-icons";
 import TextButton from "./TextButton";
+import { submitEntry, removeEntry } from "../utils/api";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -58,6 +59,7 @@ export default class AddEntry extends Component {
     const key = timeToString();
     const entry = this.state;
 
+    // Update Redux
     this.setState(() => ({
       run: 0,
       bike: 0,
@@ -66,8 +68,9 @@ export default class AddEntry extends Component {
       eat: 0
     }));
 
-    // Update Redux
     //Navigaye to home
+    submitEntry({ key, entry });
+
     //Save onto DB
     // Clear local notification
   };
@@ -77,6 +80,9 @@ export default class AddEntry extends Component {
 
     // Update Redux
     // Route to home
+
+    removeEntry(key);
+
     // Update DB
   };
 
