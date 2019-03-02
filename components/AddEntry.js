@@ -20,6 +20,7 @@ import { submitEntry, removeEntry } from "../utils/api";
 import { connect } from "react-redux";
 import { addEntry } from "../actions";
 import { white, purple } from "../utils/colors";
+import { NavigationActions } from "react-navigation";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -92,7 +93,7 @@ class AddEntry extends Component {
       eat: 0
     }));
 
-    //Navigaye to home
+    this.toHome();
     submitEntry({ key, entry });
 
     //Save onto DB
@@ -109,10 +110,18 @@ class AddEntry extends Component {
     );
 
     // Update Redux
-    // Route to home
+    this.toHome();
     removeEntry(key);
 
     // Update DB
+  };
+
+  toHome = () => {
+    this.props.navigation.dispatch(
+      NavigationActions.back({
+        key: "AddEntry"
+      })
+    );
   };
 
   render() {
