@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 21472,
-  "expoServerNgrokUrl": "https://jn-wms.anonymous.udacifitness.exp.direct",
-  "packagerNgrokUrl": "https://packager.jn-wms.anonymous.udacifitness.exp.direct",
-  "ngrokPid": 14168
+  "packagerPid": 22160,
+  "expoServerNgrokUrl": "https://sm-cna.anonymous.udacifitness.exp.direct",
+  "packagerNgrokUrl": "https://packager.sm-cna.anonymous.udacifitness.exp.direct",
+  "ngrokPid": 24340
 }
