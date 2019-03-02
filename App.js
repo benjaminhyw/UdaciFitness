@@ -32,6 +32,9 @@ const Tabs = createBottomTabNavigator(
     }
   },
   {
+    navigationOptions: {
+      header: null
+    },
     tabBarOptions: {
       activeTintColor: Platform.OS === "ios" ? purple : white,
       style: {
