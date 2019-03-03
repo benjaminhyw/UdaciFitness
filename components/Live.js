@@ -31,7 +31,7 @@ export default class Live extends Component {
       .catch(error => {
         console.warn("Error getting Location permission: ", error);
 
-        this.setState(() => ({ status: "undetermined" }));
+        this.setState(() => ({ status }));
       });
   }
   askPermission = () => {
