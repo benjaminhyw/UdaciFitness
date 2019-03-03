@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import { Foundation } from "@expo/vector-icons";
 import { purple, white } from "../utils/colors";
-import { Location, Permissions } from "expo";
 import { calculateDirection } from "../utils/helpers";
+import { Permissions, Location } from "expo";
 
 export default class Live extends Component {
   state = {
     coords: null,
-    status: "granted",
+    status: null,
     direction: ""
   };
-
   componentDidMount() {
     Permissions.getAsync(Permissions.LOCATION)
       .then(({ status }) => {
+        console.log(status);
         if (status === "granted") {
           return this.setLocation();
         }
 
-        this.setState(() => ({ status }));
+        this.setState(() => ({ status: "undetermined" })); // {status} makes things denied, but this is incorrect
+        // line above hardcoding to undetermined to work on location stuff
       })
       .catch(error => {
         console.warn("Error getting Location permission: ", error);
@@ -33,20 +34,26 @@ export default class Live extends Component {
         this.setState(() => ({ status: "undetermined" }));
       });
   }
-
-  askPermission = () => {};
-
+  askPermission = () => {
+    Permissions.askAsync(Permissions.LOCATION).then(({ status }) => {
+      if (status === "granted") {
+        return this.setLocation();
+      }
+      this.setState(() => ({ status })).catch(() =>
+        console.warn("error asking Location permission: ", error)
+      );
+    });
+  };
   setLocation = () => {
     Location.watchPositionAsync(
       {
-        enableHighAccurace: true,
+        enableHighAccuracy: true,
         timeInterval: 1,
         distanceInterval: 1
       },
       ({ coords }) => {
         const newDirection = calculateDirection(coords.heading);
-
-        const { direction } = this.state;
+        const { direction, bounceValue } = this.state;
 
         this.setState(() => ({
           coords,
@@ -56,7 +63,6 @@ export default class Live extends Component {
       }
     );
   };
-
   render() {
     const { status, coords, direction } = this.state;
 
@@ -80,8 +86,8 @@ export default class Live extends Component {
       return (
         <View style={styles.center}>
           <Foundation name="alert" size={50} />
-          <Text>You need to enable location services for this app</Text>
-          <TouchableOpacity onPress={this.askPermission} style={styles.button}>
+          <Text>You need to enable location services for this app.</Text>
+          <TouchableOpacity style={styles.button} onPress={this.askPermission}>
             <Text style={styles.buttonText}>Enable</Text>
           </TouchableOpacity>
         </View>
@@ -92,17 +98,20 @@ export default class Live extends Component {
       <View style={styles.container}>
         <View style={styles.directionContainer}>
           <Text style={styles.header}>You're heading</Text>
-          <Text style={styles.direction}>North</Text>
+          <Text style={styles.direction}>{direction}</Text>
         </View>
         <View style={styles.metricContainer}>
           <View style={styles.metric}>
             <Text style={[styles.header, { color: white }]}>Altitude</Text>
-            <Text style={[styles.subHeader, { color: white }]}>{200} Feet</Text>
+            <Text style={[styles.subHeader, { color: white }]}>
+              {coords.altitude * 3.2808} feet
+            </Text>
           </View>
-
           <View style={styles.metric}>
             <Text style={[styles.header, { color: white }]}>Speed</Text>
-            <Text style={[styles.subHeader, { color: white }]}>{300} MPH</Text>
+            <Text style={[styles.subHeader, { color: white }]}>
+              {(coords.speed * 2.2369).toFixed(1)} MPH
+            </Text>
           </View>
         </View>
       </View>
