@@ -25,13 +25,13 @@ export default class Live extends Component {
           return this.setLocation();
         }
 
-        this.setState(() => ({ status: "undetermined" })); // {status} makes things denied, but this is incorrect
+        this.setState(() => ({ status })); // {status} makes things denied, but this is incorrect
         // line above hardcoding to undetermined to work on location stuff
       })
       .catch(error => {
         console.warn("Error getting Location permission: ", error);
 
-        this.setState(() => ({ status }));
+        this.setState(() => ({ status: "undetermined" }));
       });
   }
   askPermission = () => {
